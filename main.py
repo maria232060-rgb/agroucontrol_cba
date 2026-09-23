@@ -39,14 +39,9 @@ while opcion != "0":
 
     if opcion == "0":
         print("Programa finalizado.")
-    elif opcion == "8":
-        guardar_datos("data/productos.json", productos)
-        guardar_datos("data/lotes.json", lotes)
-        guardar_datos("data/movimientos.json", movimientos)
-        guardar_datos("data/ventas.json", ventas)
-        print("Datos guardados correctamente")
+    
 
-    if opcion == "1":
+    elif opcion == "1":
         print("\n===== PRODUCTOS =====")
         print("1. Registrar producto")
         print("2. Listar productos")
@@ -68,8 +63,13 @@ while opcion != "0":
                 nombre = input("Nombre del producto: ")
                 categoria = input("Categoria: ")
                 unidad = input("Unidad: ")
+            try:
                 precio = float(input("Precio: "))
                 stock_minimo = int(input("Stock minimo: "))
+            except ValueError:
+                print("Error: El precio y el stock deben ser números válidos.")
+            else:
+                
                 if precio <= 0 or stock_minimo < 0:
                     print("Los datos ingresados no son validos")
                 producto = {
@@ -168,3 +168,75 @@ while opcion != "0":
 
             if not encontrado:
                 print("Producto no encontrado.")
+    elif opcion == "2":
+        print("\n===== LOTES =====")
+        print("1. Registrar lote")
+        print("2. Listar lotes")
+        print("3. Cosechar lote")
+        opcion_lote = input("Seleccione una opcion: ")
+
+        if opcion_lote == "1":
+            id_lote = len(lotes) + 1
+            producto_codigo = input("Codigo del producto: ").upper()
+            fecha_siembra = input("Fecha de siembra: ")
+            area_m2 = float(input("Area en m2: "))
+            cantidad_producida = float(input("Cantidad producida: "))
+
+            lote = {
+                "id_lote": id_lote,
+                "producto_codigo": producto_codigo,
+                "fecha_siembra": fecha_siembra,
+                "area_m2": area_m2,
+                "cantidad_producida": cantidad_producida,
+                "estado": "activo"
+            }
+            lotes.append(lote)
+            guardar_datos("data/lotes.json", lotes)
+            print("Lote registrado correctamente.")
+
+        elif opcion_lote == "2":
+            lotes = cargar_datos("data/lotes.json")
+
+            if len(lotes) == 0:
+                print("No hay lotes registrados.")
+            else:
+                print("\n===== LOTES REGISTRADOS =====")
+
+                for lote in lotes:
+                    print("--------------------")
+                    print("ID lote:", lote["id_lote"])
+                    print("Producto:", lote["producto_codigo"])
+                    print("Fecha de siembra:", lote["fecha_siembra"])
+                    print("Area:", lote["area_m2"], "m2")
+                    print("Cantidad producida:", lote["cantidad_producida"])
+                    print("Estado:", lote["estado"])
+
+        elif opcion_lote == "3":
+            id_lote = int(input("Ingrese el ID del lote: "))
+            encontrado = False
+            for lote in lotes:
+                if lote["id_lote"] == id_lote:
+                    encontrado = True
+                    if lote["estado"] == "activo":
+                        lote["estado"] = "cosechado"
+                        movimiento = {
+                            "producto_codigo": lote["producto_codigo"],
+                            "tipo": "entrada",
+                            "cantidad": lote["cantidad_producida"],
+                            "motivo": "cosecha",
+                            "id_lote": lote["id_lote"]
+                        }
+                        movimientos.append(movimiento)
+                        guardar_datos("data/lotes.json", lotes)
+                        guardar_datos("data/movimientos.json", movimientos)
+                        print("Lote cosechado correctamente.")
+                    else:
+                        print("El lote ya fue cosechado.")
+            if not encontrado:
+                print("Lote no encontrado.")
+    elif opcion == "8":
+            guardar_datos("data/productos.json", productos)
+            guardar_datos("data/lotes.json", lotes)
+            guardar_datos("data/movimientos.json", movimientos)
+            guardar_datos("data/ventas.json", ventas)
+            print("Datos guardados correctamente")

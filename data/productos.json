@@ -7,5 +7,14 @@
         "precio": "25",
         "stock_minimo": 10,
         "activo": true
+    },
+    {
+        "codigo": "362",
+        "nombre": "nb hm",
+        "categoria": "kb",
+        "unidad": "24",
+        "precio": 257.0,
+        "stock_minimo": 52,
+        "activo": true
     }
 ]
