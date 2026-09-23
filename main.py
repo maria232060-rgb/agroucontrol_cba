@@ -46,37 +46,44 @@ while opcion != "0":
         guardar_datos("data/ventas.json", ventas)
         print("Datos guardados correctamente")
 
-    elif opcion == "1":
+    if opcion == "1":
         print("\n===== PRODUCTOS =====")
         print("1. Registrar producto")
         print("2. Listar productos")
+        print("3. Buscar producto")
+        print("4. Actualizar producto")
+        print("5. Desactivar producto")
 
         opcion_producto = input("Seleccione una opcion: ")
 
         if opcion_producto == "1":
             codigo = input("Codigo del producto: ").upper()
-
-            nombre = input("Nombre del producto: ")
-            categoria = input("Categoria: ")
-            unidad = input("Unidad: ")
-            precio = float(input("Precio: "))
-            stock_minimo = int(input("Stock minimo: "))
-
-            producto = {
-                "codigo": codigo,
-                "nombre": nombre,
-                "categoria": categoria,
-                "unidad": unidad,
-                "precio": precio,
-                "stock_minimo": stock_minimo,
-                "activo": True
-                }
-
-            productos.append(producto)
-            guardar_datos("data/productos.json", productos)
-
-            print("Producto registrado correctamente")
-
+            existe = False
+            for producto in productos:
+                if producto["codigo"] == codigo:
+                    existe = True
+            if existe:
+                print("El codigo ya existe")
+            else:
+                nombre = input("Nombre del producto: ")
+                categoria = input("Categoria: ")
+                unidad = input("Unidad: ")
+                precio = float(input("Precio: "))
+                stock_minimo = int(input("Stock minimo: "))
+                if precio <= 0 or stock_minimo < 0:
+                    print("Los datos ingresados no son validos")
+                producto = {
+                    "codigo": codigo,
+                    "nombre": nombre,
+                    "categoria": categoria,
+                    "unidad": unidad,
+                    "precio": precio,
+                    "stock_minimo": stock_minimo,
+                    "activo": True
+                    }
+                productos.append(producto)
+                guardar_datos("data/productos.json", productos)
+                print("Producto registrado correctamente")
         elif opcion_producto == "2":
             productos = cargar_datos("data/productos.json")
 
@@ -94,3 +101,70 @@ while opcion != "0":
                         print("Categoria: ", producto["categoria"])
                         print("Precio: ", producto["precio"])
                         print("Stock_minimo: ", producto["stock_minimo"])
+
+        elif opcion_producto == "3":
+            codigo = input("Ingrese el codigo del producto: ").upper()
+            encontrado= False
+            for producto in productos:
+                if producto["codigo"] == codigo:
+                    print("\nProducto encontrado:")
+                    print("Codigo:", producto["codigo"])
+                    print("Nombre:", producto["nombre"])
+                    print("Categoria:", producto["categoria"])
+                    print("Unidad:", producto["unidad"])
+                    print("Precio:", producto["precio"])
+                    print("Stock minimo:", producto["stock_minimo"])
+                    print("Activo:", producto["activo"])
+                    encontrado = True
+            if not encontrado:
+                print("Producto no encontrado.")
+        elif opcion_producto == "4":
+            codigo = input("Ingrese el codigo del producto: ").upper()
+            encontrado = False
+            for producto in productos:
+                if producto["codigo"] == codigo and producto["activo"]:
+                    encontrado = True
+                    print("\nDeje vacio si no desea cambiar el dato.")
+                    nombre = input("Nuevo nombre: ")
+                    categoria = input("Nueva categoria: ")
+                    unidad = input("Nueva unidad: ")
+                    precio = input("Nuevo precio: ")
+                    stock_minimo = input("Nuevo stock minimo: ")
+
+                    if nombre != "":
+                        producto["nombre"] = nombre
+
+                    if categoria != "":
+                        producto["categoria"] = categoria
+
+                    if unidad != "":
+                        producto["unidad"] = unidad
+
+                    if precio != "":
+                        producto["precio"] = float(precio)
+
+                    if stock_minimo != "":
+                        producto["stock_minimo"] = int(stock_minimo)
+
+                    guardar_datos("data/productos.json", productos)
+                    print("Producto actualizado correctamente.")
+
+            if not encontrado:
+                print("Producto no encontrado o esta inactivo.")
+
+        elif opcion_producto == "5":
+            codigo = input("Ingrese el codigo del producto: ").upper()
+            encontrado = False
+            for producto in productos:
+                if producto["codigo"] == codigo:
+                    encontrado = True
+
+                    if producto["activo"]:
+                        producto["activo"] = False
+                        guardar_datos("data/productos.json", productos)
+                        print("Producto desactivado correctamente.")
+                    else:
+                        print("El producto ya esta desactivado.")
+
+            if not encontrado:
+                print("Producto no encontrado.")
