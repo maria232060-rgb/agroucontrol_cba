@@ -372,6 +372,59 @@ while opcion != "0":
         if not hay_alertas:
             print("No hay alertas de stock.")
 
+    elif opcion == "7":
+        print("\n===== REPORTES =====")
+        print("1. Productos")
+        print("2. Inventario")
+        print("3. Ventas")
+
+        opcion_reporte = input("Seleccione una opcion: ")
+
+        if opcion_reporte == "1":
+            productos = cargar_datos("data/productos.json")
+
+            print("\n===== REPORTE DE PRODUCTOS =====")
+
+            for producto in productos:
+                print("--------------------")
+                print("Codigo:", producto["codigo"])
+                print("Nombre:", producto["nombre"])
+                print("Categoria:", producto["categoria"])
+                print("Precio:", producto["precio"])
+                print("Activo:", producto["activo"])
+
+        elif opcion_reporte == "2":
+            productos = cargar_datos("data/productos.json")
+
+            print("\n===== REPORTE DE INVENTARIO =====")
+
+            for producto in productos:
+                stock = calcular_stock(producto["codigo"])
+
+                print("--------------------")
+                print("Producto:", producto["nombre"])
+                print("Codigo:", producto["codigo"])
+                print("Stock:", stock)
+                print("Stock minimo:", producto["stock_minimo"])
+
+        elif opcion_reporte == "3":
+            ventas = cargar_datos("data/ventas.json")
+
+            total_ventas = 0
+
+            print("\n===== REPORTE DE VENTAS =====")
+
+            for venta in ventas:
+                print("--------------------")
+                print("Venta:", venta["id"])
+                print("Fecha:", venta["fecha"])
+                print("Total:", venta["total"])
+
+                total_ventas += float(venta["total"])
+
+            print("--------------------")
+            print("Total vendido:", total_ventas)
+
     elif opcion == "8":
             guardar_datos("data/productos.json", productos)
             guardar_datos("data/lotes.json", lotes)
