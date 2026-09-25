@@ -6,5 +6,13 @@
         "area_m2": 89.0,
         "cantidad_producida": 98.0,
         "estado": "cosechado"
+    },
+    {
+        "id_lote": 2,
+        "producto_codigo": "P002",
+        "fecha_siembra": "21/09/2009",
+        "area_m2": 69.0,
+        "cantidad_producida": 3500.0,
+        "estado": "activo"
     }
 ]

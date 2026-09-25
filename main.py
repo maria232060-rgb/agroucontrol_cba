@@ -87,6 +87,9 @@ while opcion != "0":
         opcion_producto = input("Seleccione una opcion: ")
 
         if opcion_producto == "1":
+            if codigo == "":
+                print("El codigo no puede estar vacio.")
+                continue
             codigo = input("Codigo del producto: ").upper()
             existe = False
             for producto in productos:
@@ -214,6 +217,15 @@ while opcion != "0":
         if opcion_lote == "1":
             id_lote = len(lotes) + 1
             producto_codigo = input("Codigo del producto: ").upper()
+            producto_existe = False
+
+            for producto in productos:
+                if producto["codigo"] == producto_codigo and producto["activo"]:
+                    producto_existe = True
+
+            if not producto_existe:
+                print("El producto no existe o esta inactivo.")
+                continue
             fecha_siembra = input("Fecha de siembra: ")
             area_m2 = float(input("Area en m2: "))
             cantidad_producida = float(input("Cantidad producida: "))
