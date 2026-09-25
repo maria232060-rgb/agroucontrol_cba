@@ -12,5 +12,12 @@
         "tipo": "salida",
         "cantidad": 30,
         "motivo": "Venta V0001"
+    },
+    {
+        "id": "M0003",
+        "producto_codigo": "P001",
+        "tipo": "salida",
+        "cantidad": 32,
+        "motivo": "Venta V0002"
     }
 ]
