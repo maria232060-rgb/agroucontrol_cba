@@ -2,6 +2,28 @@ import json
 import os
 from datetime import datetime
 
+def calcular_stock(codigo):
+    stock = 0
+
+    for movimiento in movimientos:
+        if movimiento["producto_codigo"] == codigo:
+            if movimiento["tipo"] == "entrada":
+                stock += movimiento["cantidad"]
+            elif movimiento["tipo"] == "salida":
+                stock -= movimiento["cantidad"]
+
+    return stock
+
+
+def pedir_numero(mensaje):
+    while True:
+        valor = input(mensaje)
+
+        if valor.isdigit():
+            return int(valor)
+
+        print("Ingrese solamente numeros.")
+
 def cargar_datos(archivo):
     try:
         with open(archivo, "r", encoding="utf-8") as f:
@@ -267,29 +289,25 @@ while opcion != "0":
             if producto_encontrado is None:
                 print("Producto no encontrado o esta inactivo.")
             else:
-                cantidad = input("Cantidad: ")
+                cantidad = pedir_numero("Cantidad: ")
+                stock = calcular_stock(codigo)
 
-                if cantidad.isdigit() and int(cantidad) > 0:
-                    cantidad = int(cantidad)
-                    stock = calcular_stock(codigo)
+                if cantidad <= stock:
+                    subtotal = cantidad * float(producto_encontrado["precio"])
 
-                    if cantidad <= stock:
-                        subtotal = cantidad * float(producto_encontrado["precio"])
+                    item = {
+                        "codigo": codigo,
+                        "cantidad": cantidad,
+                        "precio_unitario": producto_encontrado["precio"],
+                        "subtotal": subtotal
+                    }
 
-                        item = {
-                            "codigo": codigo,
-                            "cantidad": cantidad,
-                            "precio_unitario": producto_encontrado["precio"],
-                            "subtotal": subtotal
-                        }
+                    items.append(item)
 
-                        items.append(item)
+                    print("Producto agregado a la venta.")
 
-                        print("Producto agregado a la venta.")
-                    else:
-                        print("No hay suficiente stock.")
                 else:
-                    print("La cantidad debe ser un numero mayor que 0.")
+                    print("No hay suficiente stock.")
 
             continuar = input("¿Desea agregar otro producto? (s/n): ").lower()
 
