@@ -330,6 +330,48 @@ while opcion != "0":
         else:
             print("No se registro la venta.")
 
+    elif opcion == "5":
+        print("\n===== CONSULTAR VENTAS =====")
+
+        ventas = cargar_datos("data/ventas.json")
+
+        if len(ventas) == 0:
+            print("No hay ventas registradas.")
+        else:
+            for venta in ventas:
+                print("--------------------")
+                print("Venta:", venta["id"])
+                print("Fecha:", venta["fecha"])
+                print("Total:", venta["total"])
+
+                for item in venta["items"]:
+                    print("Producto:", item["codigo"])
+                    print("Cantidad:", item["cantidad"])
+                    print("Precio:", item["precio_unitario"])
+
+    elif opcion == "6":
+        print("\n===== ALERTAS DE STOCK =====")
+
+        productos = cargar_datos("data/productos.json")
+
+        hay_alertas = False
+
+        for producto in productos:
+            if producto["activo"]:
+                stock = calcular_stock(producto["codigo"])
+
+                if stock <= producto["stock_minimo"]:
+                    print("--------------------")
+                    print("Producto:", producto["nombre"])
+                    print("Codigo:", producto["codigo"])
+                    print("Stock actual:", stock)
+                    print("Stock minimo:", producto["stock_minimo"])
+
+                    hay_alertas = True
+
+        if not hay_alertas:
+            print("No hay alertas de stock.")
+
     elif opcion == "8":
             guardar_datos("data/productos.json", productos)
             guardar_datos("data/lotes.json", lotes)
