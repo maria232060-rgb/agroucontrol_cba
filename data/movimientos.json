@@ -1,1 +1,16 @@
-[]
+[
+    {
+        "producto_codigo": "P001",
+        "tipo": "entrada",
+        "cantidad": 98.0,
+        "motivo": "cosecha",
+        "id_lote": 1
+    },
+    {
+        "id": "M0002",
+        "producto_codigo": "P001",
+        "tipo": "salida",
+        "cantidad": 30,
+        "motivo": "Venta V0001"
+    }
+]

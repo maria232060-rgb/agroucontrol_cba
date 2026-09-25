@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import datetime
 
 def cargar_datos(archivo):
     try:
@@ -18,6 +19,18 @@ movimientos = cargar_datos("data/movimientos.json")
 ventas = cargar_datos("data/ventas.json")
 
 print("Datos cargados correctamente")
+
+def calcular_stock(codigo):
+    stock = 0
+
+    for movimiento in movimientos:
+        if movimiento["producto_codigo"] == codigo:
+            if movimiento["tipo"] == "entrada":
+                stock += movimiento["cantidad"]
+            elif movimiento["tipo"] == "salida":
+                stock -= movimiento["cantidad"]
+
+    return stock
 
 def mostrar_menu():
     print("\n=====AGROCONTROL CBA=====")
@@ -72,18 +85,19 @@ while opcion != "0":
                 
                 if precio <= 0 or stock_minimo < 0:
                     print("Los datos ingresados no son validos")
-                producto = {
-                    "codigo": codigo,
-                    "nombre": nombre,
-                    "categoria": categoria,
-                    "unidad": unidad,
-                    "precio": precio,
-                    "stock_minimo": stock_minimo,
-                    "activo": True
+                else:
+                    producto = {
+                        "codigo": codigo,
+                        "nombre": nombre,
+                        "categoria": categoria,
+                        "unidad": unidad,
+                        "precio": precio,
+                        "stock_minimo": stock_minimo,
+                        "activo": True
                     }
-                productos.append(producto)
-                guardar_datos("data/productos.json", productos)
-                print("Producto registrado correctamente")
+                    productos.append(producto)
+                    guardar_datos("data/productos.json", productos)
+                    print("Producto registrado correctamente")
         elif opcion_producto == "2":
             productos = cargar_datos("data/productos.json")
 
@@ -234,6 +248,88 @@ while opcion != "0":
                         print("El lote ya fue cosechado.")
             if not encontrado:
                 print("Lote no encontrado.")
+
+    elif opcion == "4":
+        print("\n===== REGISTRAR VENTA =====")
+
+        items = []
+        continuar = "s"
+
+        while continuar == "s":
+            codigo = input("Codigo del producto: ").upper()
+
+            producto_encontrado = None
+
+            for producto in productos:
+                if producto["codigo"] == codigo and producto["activo"]:
+                    producto_encontrado = producto
+
+            if producto_encontrado is None:
+                print("Producto no encontrado o esta inactivo.")
+            else:
+                cantidad = input("Cantidad: ")
+
+                if cantidad.isdigit() and int(cantidad) > 0:
+                    cantidad = int(cantidad)
+                    stock = calcular_stock(codigo)
+
+                    if cantidad <= stock:
+                        subtotal = cantidad * float(producto_encontrado["precio"])
+
+                        item = {
+                            "codigo": codigo,
+                            "cantidad": cantidad,
+                            "precio_unitario": producto_encontrado["precio"],
+                            "subtotal": subtotal
+                        }
+
+                        items.append(item)
+
+                        print("Producto agregado a la venta.")
+                    else:
+                        print("No hay suficiente stock.")
+                else:
+                    print("La cantidad debe ser un numero mayor que 0.")
+
+            continuar = input("¿Desea agregar otro producto? (s/n): ").lower()
+
+        if len(items) > 0:
+            total = 0
+
+            for item in items:
+                total += item["subtotal"]
+
+            numero_venta = len(ventas) + 1
+
+            venta = {
+                "id": "V" + str(numero_venta).zfill(4),
+                "fecha": datetime.now().strftime("%Y-%m-%d %H:%M"),
+                "items": items,
+                "total": total
+            }
+
+            ventas.append(venta)
+
+            for item in items:
+                movimiento = {
+                    "id": "M" + str(len(movimientos) + 1).zfill(4),
+                    "producto_codigo": item["codigo"],
+                    "tipo": "salida",
+                    "cantidad": item["cantidad"],
+                    "motivo": "Venta " + venta["id"]
+                }
+
+                movimientos.append(movimiento)
+
+            guardar_datos("data/ventas.json", ventas)
+            guardar_datos("data/movimientos.json", movimientos)
+
+            print("\nVenta registrada correctamente.")
+            print("Numero de venta:", venta["id"])
+            print("Total:", total)
+        else:
+            print("No se registro la venta.")
+
     elif opcion == "8":
             guardar_datos("data/productos.json", productos)
             guardar_datos("data/lotes.json", lotes)
