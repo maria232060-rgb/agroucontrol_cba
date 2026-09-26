@@ -538,9 +538,9 @@ while opcion != "0":
         try:
             if not os.path.exists("reportes"):
                 os.makedirs("reportes")
-            
-            archivo_csv = "reportes/inventario.csv"
-            
+
+            archivo_csv = "reportes/inventario_exportado.csv"  
+                      
             with open(archivo_csv, mode="w", newline="", encoding="utf-8") as f:
                 escritor = csv.writer(f)
                 escritor.writerow(["Codigo", "Nombre", "Categoria", "Precio", "Costo", "Stock_Actual", "Stock_Minimo", "Estado"])
