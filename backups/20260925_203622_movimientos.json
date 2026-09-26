@@ -26,12 +26,5 @@
         "tipo": "entrada",
         "cantidad": 30,
         "motivo": "Devolución Venta V0001"
-    },
-    {
-        "id": "M0005",
-        "producto_codigo": "P001",
-        "tipo": "salida",
-        "cantidad": 5,
-        "motivo": "Venta V0003"
     }
 ]

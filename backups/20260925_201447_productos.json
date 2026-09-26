@@ -1,0 +1,11 @@
+[
+    {
+        "codigo": "P001",
+        "nombre": "Lechuga",
+        "categoria": "Hortalizas",
+        "unidad": "25",
+        "precio": 2500,
+        "stock_minimo": 10,
+        "activo": true
+    }
+]

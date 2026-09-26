@@ -25,20 +25,5 @@
             }
         ],
         "total": 80000.0
-    },
-    {
-        "id": "V0003",
-        "fecha": "2026-09-25 20:36",
-        "items": [
-            {
-                "codigo": "P001",
-                "cantidad": 5,
-                "precio_unitario": 2500,
-                "costo_unitario": 0.0,
-                "subtotal": 12500.0
-            }
-        ],
-        "total": 12500.0,
-        "estado": "completada"
     }
 ]

@@ -14,13 +14,5 @@
         "area_m2": 69.0,
         "cantidad_producida": 3500.0,
         "estado": "activo"
-    },
-    {
-        "id_lote": 3,
-        "producto_codigo": "P003",
-        "fecha_siembra": "2009-03-21",
-        "area_m2": 900.0,
-        "cantidad_producida": 1.0,
-        "estado": "activo"
     }
 ]

@@ -10,8 +10,7 @@
                 "subtotal": 75000.0
             }
         ],
-        "total": 75000.0,
-        "estado": "devuelta"
+        "total": 75000.0
     },
     {
         "id": "V0002",
@@ -25,20 +24,5 @@
             }
         ],
         "total": 80000.0
-    },
-    {
-        "id": "V0003",
-        "fecha": "2026-09-25 20:36",
-        "items": [
-            {
-                "codigo": "P001",
-                "cantidad": 5,
-                "precio_unitario": 2500,
-                "costo_unitario": 0.0,
-                "subtotal": 12500.0
-            }
-        ],
-        "total": 12500.0,
-        "estado": "completada"
     }
 ]

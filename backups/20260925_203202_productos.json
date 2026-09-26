@@ -17,15 +17,5 @@
         "costo": 500.0,
         "stock_minimo": 60,
         "activo": true
-    },
-    {
-        "codigo": "P005",
-        "nombre": "Almendra",
-        "categoria": "Frutos secos",
-        "unidad": "6",
-        "precio": 50.0,
-        "costo": 1.0,
-        "stock_minimo": 30,
-        "activo": true
     }
 ]
